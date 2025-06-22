@@ -1,12 +1,12 @@
-
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import { Progress } from '@/components/ui/progress';
-import { Phone, Users, Scissors, Trophy, PlayCircle, Home } from 'lucide-react';
+import { Phone, Users, Scissors, Trophy, PlayCircle, Home, Building } from 'lucide-react';
 import { toast } from '@/hooks/use-toast';
+import BankingSystem from '@/components/BankingSystem';
 
 interface Question {
   id: number;
@@ -152,7 +152,7 @@ const QUESTIONS: Question[] = [
 ];
 
 const Index = () => {
-  const [gameState, setGameState] = useState<'menu' | 'playing' | 'finished'>('menu');
+  const [gameState, setGameState] = useState<'menu' | 'playing' | 'finished' | 'banking'>('menu');
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
   const [finalAnswer, setFinalAnswer] = useState<number | null>(null);
@@ -168,6 +168,7 @@ const Index = () => {
   const [audienceResults, setAudienceResults] = useState<number[] | null>(null);
   const [friendSuggestion, setFriendSuggestion] = useState<number | null>(null);
   const [showLifelineDialog, setShowLifelineDialog] = useState<string | null>(null);
+  const [pendingWinnings, setPendingWinnings] = useState(0);
 
   const currentQuestion = QUESTIONS[currentQuestionIndex];
   const currentPrize = MONEY_LADDER[currentQuestionIndex];
@@ -179,6 +180,7 @@ const Index = () => {
     setFinalAnswer(null);
     setGameOver(false);
     setWonAmount('$0');
+    setPendingWinnings(0);
     setUsedLifelines({ fiftyFifty: false, askAudience: false, phoneAFriend: false });
     setHiddenOptions([]);
     setAudienceResults(null);
@@ -212,10 +214,12 @@ const Index = () => {
       
       if (currentQuestionIndex === QUESTIONS.length - 1) {
         // Won the game!
+        const winnings = parseInt(newAmount.replace(/[\$,]/g, ''));
+        setPendingWinnings(winnings);
         setGameState('finished');
         toast({
           title: "CONGRATULATIONS! 🎉",
-          description: "You've won $1,000,000!",
+          description: "You've won $1,000,000! Check your bank account!",
         });
       } else {
         // Next question
@@ -235,11 +239,17 @@ const Index = () => {
     } else {
       // Wrong answer
       let finalAmount = '$0';
+      let winnings = 0;
       // Check for safe points
       if (currentQuestionIndex > SAFE_POINTS[1]) {
         finalAmount = MONEY_LADDER[SAFE_POINTS[1]];
       } else if (currentQuestionIndex > SAFE_POINTS[0]) {
         finalAmount = MONEY_LADDER[SAFE_POINTS[0]];
+      }
+      
+      if (finalAmount !== '$0') {
+        winnings = parseInt(finalAmount.replace(/[\$,]/g, ''));
+        setPendingWinnings(winnings);
       }
       
       setWonAmount(finalAmount);
@@ -255,12 +265,26 @@ const Index = () => {
 
   const walkAway = () => {
     const currentAmount = currentQuestionIndex > 0 ? MONEY_LADDER[currentQuestionIndex - 1] : '$0';
+    let winnings = 0;
+    if (currentAmount !== '$0') {
+      winnings = parseInt(currentAmount.replace(/[\$,]/g, ''));
+      setPendingWinnings(winnings);
+    }
     setWonAmount(currentAmount);
     setGameState('finished');
     toast({
       title: "You walked away!",
       description: `You leave with ${currentAmount}.`,
     });
+  };
+
+  const openBanking = () => {
+    setGameState('banking');
+  };
+
+  const closeBanking = () => {
+    setGameState('finished');
+    setPendingWinnings(0); // Clear winnings after banking
   };
 
   const useFiftyFifty = () => {
@@ -320,6 +344,10 @@ const Index = () => {
     setShowLifelineDialog('friend');
   };
 
+  if (gameState === 'banking') {
+    return <BankingSystem onClose={closeBanking} pendingWinnings={pendingWinnings} />;
+  }
+
   if (gameState === 'menu') {
     return (
       <div className="min-h-screen bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900 flex items-center justify-center p-4">
@@ -332,6 +360,9 @@ const Index = () => {
             </div>
             <p className="text-purple-800 mb-6 text-lg">
               Answer 15 questions correctly to win $1,000,000!
+            </p>
+            <p className="text-purple-700 mb-6 text-sm font-semibold">
+              💰 Win REAL money deposited to your bank account! 💰
             </p>
             <Button 
               onClick={startGame}
@@ -358,6 +389,23 @@ const Index = () => {
             <p className="text-purple-800 mb-6 text-xl">
               You won: <span className="text-2xl font-bold">{wonAmount}</span>
             </p>
+            {pendingWinnings > 0 && (
+              <div className="mb-6 p-4 bg-green-100 border-2 border-green-300 rounded-lg">
+                <p className="text-green-800 font-bold mb-2">
+                  🏦 Ready to claim your winnings?
+                </p>
+                <Button 
+                  onClick={openBanking}
+                  className="bg-green-600 hover:bg-green-700 text-white font-bold px-6 py-2 rounded-full mb-2"
+                >
+                  <Building className="w-5 h-5 mr-2" />
+                  Access Your Bank Account
+                </Button>
+                <p className="text-green-700 text-sm">
+                  Secure transfer to your account available now!
+                </p>
+              </div>
+            )}
             <div className="space-y-3">
               <Button 
                 onClick={startGame}
