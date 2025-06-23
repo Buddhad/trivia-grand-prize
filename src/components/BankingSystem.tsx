@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
-import { CreditCard, Building, DollarSign, ArrowRight, Shield, Check, AlertCircle, Eye, EyeOff, ArrowLeft } from 'lucide-react';
+import { CreditCard, Building, DollarSign, ArrowRight, Shield, Check, AlertCircle, Eye, EyeOff, ArrowLeft, User, Bell, Settings, Search } from 'lucide-react';
 import { toast } from '@/hooks/use-toast';
 
 interface BankAccount {
@@ -41,31 +41,31 @@ const BankingSystem: React.FC<BankingSystemProps> = ({ onClose, pendingWinnings 
   const [withdrawAmount, setWithdrawAmount] = useState('');
   
   const [account, setAccount] = useState<BankAccount>({
-    accountNumber: '****-****-****-4582',
-    balance: 15420.50,
-    accountType: 'Premium Checking',
+    accountNumber: '23476385309',
+    balance: 332430.65,
+    accountType: 'Savings Account',
     transactions: [
       {
         id: '001',
         type: 'deposit',
-        amount: 2500.00,
-        description: 'Salary Deposit - TechCorp Inc.',
+        amount: 25000.00,
+        description: 'UPI/CR/328091574847/PRAMIL',
         date: '2024-06-20',
         status: 'completed'
       },
       {
         id: '002',
         type: 'withdrawal',
-        amount: -250.00,
-        description: 'ATM Withdrawal - Downtown Branch',
+        amount: -26770.00,
+        description: 'UPI/DR/328240908978/Bruhat',
         date: '2024-06-19',
         status: 'completed'
       },
       {
         id: '003',
         type: 'transfer',
-        amount: -500.00,
-        description: 'Transfer to Savings Account',
+        amount: -5000.00,
+        description: 'NEFT Transfer to Savings Account',
         date: '2024-06-18',
         status: 'completed'
       }
@@ -78,12 +78,12 @@ const BankingSystem: React.FC<BankingSystemProps> = ({ onClose, pendingWinnings 
       setCurrentView('dashboard');
       toast({
         title: "Login Successful",
-        description: "Welcome to SecureBank Online Banking",
+        description: "Welcome to SBI OnlineSBI",
       });
     } else {
       toast({
-        title: "Invalid PIN",
-        description: "Please enter your 4-digit PIN",
+        title: "Invalid MPIN",
+        description: "Please enter your 4-digit MPIN",
         variant: "destructive"
       });
     }
@@ -107,8 +107,8 @@ const BankingSystem: React.FC<BankingSystemProps> = ({ onClose, pendingWinnings 
       }));
 
       toast({
-        title: "🎉 Winnings Deposited!",
-        description: `$${pendingWinnings.toLocaleString()} has been added to your account`,
+        title: "🎉 Winnings Credited!",
+        description: `₹${pendingWinnings.toLocaleString()} has been credited to your account`,
       });
     }
   };
@@ -120,7 +120,7 @@ const BankingSystem: React.FC<BankingSystemProps> = ({ onClose, pendingWinnings 
         id: Date.now().toString(),
         type: 'transfer',
         amount: -amount,
-        description: `Transfer to ${transferTo}`,
+        description: `UPI Transfer to ${transferTo}`,
         date: new Date().toISOString().split('T')[0],
         status: 'completed'
       };
@@ -133,7 +133,7 @@ const BankingSystem: React.FC<BankingSystemProps> = ({ onClose, pendingWinnings 
 
       toast({
         title: "Transfer Successful",
-        description: `$${amount.toLocaleString()} transferred to ${transferTo}`,
+        description: `₹${amount.toLocaleString()} transferred to ${transferTo}`,
       });
 
       setTransferAmount('');
@@ -155,7 +155,7 @@ const BankingSystem: React.FC<BankingSystemProps> = ({ onClose, pendingWinnings 
         id: Date.now().toString(),
         type: 'deposit',
         amount: amount,
-        description: 'Cash Deposit - Online Banking',
+        description: 'Cash Deposit - OnlineSBI',
         date: new Date().toISOString().split('T')[0],
         status: 'completed'
       };
@@ -168,7 +168,7 @@ const BankingSystem: React.FC<BankingSystemProps> = ({ onClose, pendingWinnings 
 
       toast({
         title: "Deposit Successful",
-        description: `$${amount.toLocaleString()} deposited to your account`,
+        description: `₹${amount.toLocaleString()} deposited to your account`,
       });
 
       setDepositAmount('');
@@ -189,7 +189,7 @@ const BankingSystem: React.FC<BankingSystemProps> = ({ onClose, pendingWinnings 
         id: Date.now().toString(),
         type: 'withdrawal',
         amount: -amount,
-        description: 'Cash Withdrawal - Online Banking',
+        description: 'ATM Withdrawal - OnlineSBI',
         date: new Date().toISOString().split('T')[0],
         status: 'completed'
       };
@@ -202,7 +202,7 @@ const BankingSystem: React.FC<BankingSystemProps> = ({ onClose, pendingWinnings 
 
       toast({
         title: "Withdrawal Successful",
-        description: `$${amount.toLocaleString()} withdrawn from your account`,
+        description: `₹${amount.toLocaleString()} withdrawn from your account`,
       });
 
       setWithdrawAmount('');
@@ -223,37 +223,46 @@ const BankingSystem: React.FC<BankingSystemProps> = ({ onClose, pendingWinnings 
   }, [isLoggedIn, pendingWinnings]);
 
   const formatCurrency = (amount: number) => {
-    return new Intl.NumberFormat('en-US', {
+    return new Intl.NumberFormat('en-IN', {
       style: 'currency',
-      currency: 'USD'
+      currency: 'INR',
+      minimumFractionDigits: 2
     }).format(Math.abs(amount));
   };
 
   if (!isLoggedIn) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-900 via-blue-800 to-indigo-900 flex items-center justify-center p-4">
-        <Card className="w-full max-w-md bg-white shadow-2xl">
-          <CardHeader className="text-center pb-2">
-            <div className="flex items-center justify-center mb-4">
-              <Building className="w-8 h-8 text-blue-600 mr-2" />
-              <h1 className="text-2xl font-bold text-blue-900">SecureBank</h1>
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-blue-100 flex items-center justify-center p-4">
+        <Card className="w-full max-w-md bg-white shadow-xl border-0">
+          <CardHeader className="text-center pb-2 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-t-lg">
+            <div className="flex items-center justify-center mb-2">
+              <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center mr-3">
+                <span className="text-blue-600 font-bold text-xl">SBI</span>
+              </div>
+              <div className="text-left">
+                <h1 className="text-xl font-bold">State Bank of India</h1>
+                <p className="text-blue-100 text-sm">OnlineSBI</p>
+              </div>
             </div>
-            <CardTitle className="text-xl text-gray-700">Online Banking</CardTitle>
-            <p className="text-sm text-gray-500">Secure • Trusted • Reliable</p>
           </CardHeader>
-          <CardContent className="space-y-6">
+          <CardContent className="space-y-6 p-6">
+            <div className="text-center">
+              <h2 className="text-xl font-semibold text-gray-800 mb-2">Personal Banking Login</h2>
+              <p className="text-sm text-gray-600">Secure • Trusted • Reliable</p>
+            </div>
+            
             <div className="space-y-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  4-Digit PIN
+                  Enter MPIN
                 </label>
                 <div className="relative">
                   <Input
                     type={showPin ? "text" : "password"}
                     value={pin}
                     onChange={(e) => setPin(e.target.value.slice(0, 4))}
-                    placeholder="Enter your PIN"
-                    className="pr-10"
+                    placeholder="Enter 4-digit MPIN"
+                    className="pr-10 border-gray-300"
                     maxLength={4}
                   />
                   <button
@@ -268,16 +277,16 @@ const BankingSystem: React.FC<BankingSystemProps> = ({ onClose, pendingWinnings 
               
               <Button 
                 onClick={handleLogin} 
-                className="w-full bg-blue-600 hover:bg-blue-700"
+                className="w-full bg-blue-600 hover:bg-blue-700 h-12"
                 disabled={pin.length !== 4}
               >
                 <Shield className="w-4 h-4 mr-2" />
-                Secure Login
+                LOGIN
               </Button>
               
               <div className="text-center">
                 <p className="text-xs text-gray-500">
-                  Demo PIN: 1234 or 0000
+                  Demo MPIN: 1234 or 0000
                 </p>
               </div>
             </div>
@@ -291,16 +300,16 @@ const BankingSystem: React.FC<BankingSystemProps> = ({ onClose, pendingWinnings 
               </div>
               <div className="flex items-center">
                 <Check className="w-3 h-3 mr-1" />
-                FDIC Insured
+                RBI Approved
               </div>
             </div>
 
             <Button 
               variant="outline" 
               onClick={onClose}
-              className="w-full"
+              className="w-full border-blue-200 text-blue-600 hover:bg-blue-50"
             >
-              Back to Game
+              Back to Quiz Game
             </Button>
           </CardContent>
         </Card>
@@ -309,188 +318,220 @@ const BankingSystem: React.FC<BankingSystemProps> = ({ onClose, pendingWinnings 
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 p-4">
-      <div className="max-w-6xl mx-auto">
-        {/* Header */}
-        <Card className="mb-6 bg-gradient-to-r from-blue-600 to-blue-700 text-white">
-          <CardContent className="p-6">
-            <div className="flex justify-between items-center">
-              <div className="flex items-center">
-                <Building className="w-8 h-8 mr-3" />
-                <div>
-                  <h1 className="text-2xl font-bold">SecureBank</h1>
-                  <p className="text-blue-100">Online Banking Dashboard</p>
-                </div>
-              </div>
-              <div className="text-right">
-                <p className="text-sm text-blue-100">Account: {account.accountNumber}</p>
-                <Badge className="bg-green-500 text-white mt-1">
-                  {account.accountType}
-                </Badge>
-              </div>
+    <div className="min-h-screen bg-gray-50">
+      {/* SBI Header */}
+      <div className="bg-gradient-to-r from-blue-600 to-blue-700 text-white p-4 shadow-lg">
+        <div className="max-w-7xl mx-auto flex justify-between items-center">
+          <div className="flex items-center">
+            <div className="w-10 h-10 bg-white rounded-full flex items-center justify-center mr-3">
+              <span className="text-blue-600 font-bold">SBI</span>
             </div>
-          </CardContent>
-        </Card>
+            <div>
+              <h1 className="text-xl font-bold">State Bank of India</h1>
+              <p className="text-blue-100 text-sm">OnlineSBI - Personal Banking</p>
+            </div>
+          </div>
+          <div className="flex items-center space-x-4">
+            <div className="flex items-center space-x-2">
+              <User className="w-5 h-5" />
+              <span className="text-sm">Vishal G</span>
+            </div>
+            <Bell className="w-5 h-5 cursor-pointer" />
+            <Settings className="w-5 h-5 cursor-pointer" />
+          </div>
+        </div>
+      </div>
 
+      <div className="max-w-7xl mx-auto p-4">
         {currentView === 'dashboard' && (
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            {/* Account Balance */}
-            <Card className="lg:col-span-2">
-              <CardHeader>
-                <CardTitle className="flex items-center">
-                  <DollarSign className="w-5 h-5 mr-2 text-green-600" />
-                  Account Balance
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="text-4xl font-bold text-green-600 mb-4">
-                  {formatCurrency(account.balance)}
-                </div>
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="bg-green-50 p-4 rounded-lg">
-                    <p className="text-sm text-gray-600">Available Balance</p>
-                    <p className="text-xl font-semibold text-green-700">
-                      {formatCurrency(account.balance)}
-                    </p>
+          <div className="space-y-6">
+            {/* Welcome Message */}
+            <Card className="bg-gradient-to-r from-blue-50 to-blue-100 border-blue-200">
+              <CardContent className="p-4">
+                <div className="flex justify-between items-center">
+                  <div>
+                    <h2 className="text-lg font-semibold text-blue-800">Welcome back, Vishal!</h2>
+                    <p className="text-blue-600 text-sm">Your financial journey matters to us!</p>
                   </div>
-                  <div className="bg-blue-50 p-4 rounded-lg">
-                    <p className="text-sm text-gray-600">Account Type</p>
-                    <p className="text-xl font-semibold text-blue-700">
-                      {account.accountType}
-                    </p>
+                  <div className="text-right text-sm text-blue-700">
+                    <p>Last logged on: {new Date().toLocaleDateString()}</p>
                   </div>
                 </div>
-                {pendingWinnings > 0 && (
-                  <div className="mt-4 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
-                    <div className="flex items-center">
-                      <AlertCircle className="w-5 h-5 text-yellow-600 mr-2" />
-                      <span className="font-medium text-yellow-800">
-                        Pending Quiz Winnings: {formatCurrency(pendingWinnings)}
-                      </span>
-                    </div>
-                    <p className="text-sm text-yellow-700 mt-1">
-                      Will be automatically deposited to your account
-                    </p>
-                  </div>
-                )}
               </CardContent>
             </Card>
 
-            {/* Quick Actions */}
-            <Card>
-              <CardHeader>
-                <CardTitle>Quick Actions</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-3">
-                <Button 
-                  className="w-full justify-start" 
-                  variant="outline"
-                  onClick={() => setCurrentView('transfer')}
-                >
-                  <CreditCard className="w-4 h-4 mr-2" />
-                  Transfer Money
-                </Button>
-                <Button 
-                  className="w-full justify-start" 
-                  variant="outline"
-                  onClick={() => setCurrentView('deposit')}
-                >
-                  <DollarSign className="w-4 h-4 mr-2" />
-                  Deposit Funds
-                </Button>
-                <Button 
-                  className="w-full justify-start" 
-                  variant="outline"
-                  onClick={() => setCurrentView('withdraw')}
-                >
-                  <ArrowRight className="w-4 h-4 mr-2" />
-                  Withdraw Cash
-                </Button>
-                <Separator />
-                <Button 
-                  onClick={onClose}
-                  className="w-full bg-purple-600 hover:bg-purple-700"
-                >
-                  Back to Quiz Game
-                </Button>
-              </CardContent>
-            </Card>
+            <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
+              {/* Sidebar */}
+              <Card className="lg:col-span-1">
+                <CardHeader className="pb-3">
+                  <CardTitle className="text-sm font-medium text-gray-600">QUICK ACTIONS</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-2">
+                  <Button 
+                    className="w-full justify-start h-10 bg-blue-600 hover:bg-blue-700" 
+                    onClick={() => setCurrentView('transfer')}
+                  >
+                    <CreditCard className="w-4 h-4 mr-2" />
+                    Transfer Money
+                  </Button>
+                  <Button 
+                    className="w-full justify-start h-10" 
+                    variant="outline"
+                    onClick={() => setCurrentView('deposit')}
+                  >
+                    <DollarSign className="w-4 h-4 mr-2" />
+                    Deposit Funds
+                  </Button>
+                  <Button 
+                    className="w-full justify-start h-10" 
+                    variant="outline"
+                    onClick={() => setCurrentView('withdraw')}
+                  >
+                    <ArrowRight className="w-4 h-4 mr-2" />
+                    Withdraw Cash
+                  </Button>
+                  <Separator className="my-3" />
+                  <Button 
+                    onClick={onClose}
+                    className="w-full bg-orange-500 hover:bg-orange-600 h-10"
+                  >
+                    Back to Quiz Game
+                  </Button>
+                </CardContent>
+              </Card>
 
-            {/* Recent Transactions */}
-            <Card className="lg:col-span-3">
-              <CardHeader>
-                <CardTitle>Recent Transactions</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  {account.transactions.map((transaction) => (
-                    <div key={transaction.id} className="flex items-center justify-between p-4 border rounded-lg">
-                      <div className="flex items-center space-x-4">
-                        <div className={`w-10 h-10 rounded-full flex items-center justify-center ${
-                          transaction.type === 'deposit' || transaction.type === 'quiz_winning' 
-                            ? 'bg-green-100 text-green-600' 
-                            : 'bg-red-100 text-red-600'
-                        }`}>
-                          {transaction.type === 'deposit' || transaction.type === 'quiz_winning' ? (
-                            <ArrowRight className="w-5 h-5 rotate-180" />
-                          ) : (
-                            <ArrowRight className="w-5 h-5" />
-                          )}
-                        </div>
-                        <div>
-                          <p className="font-medium">{transaction.description}</p>
-                          <p className="text-sm text-gray-500">{transaction.date}</p>
+              {/* Main Content */}
+              <div className="lg:col-span-3 space-y-6">
+                {/* Account Summary */}
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="flex items-center text-lg">
+                      <Building className="w-5 h-5 mr-2 text-blue-600" />
+                      Account Summary
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      <div>
+                        <div className="space-y-2">
+                          <div className="flex justify-between">
+                            <span className="text-sm text-gray-600">Account Number</span>
+                            <span className="font-medium">{account.accountNumber}</span>
+                          </div>
+                          <div className="flex justify-between">
+                            <span className="text-sm text-gray-600">Account Type</span>
+                            <span className="font-medium">{account.accountType}</span>
+                          </div>
+                          <div className="flex justify-between">
+                            <span className="text-sm text-gray-600">Branch</span>
+                            <span className="font-medium">RPC Layout Bangalore</span>
+                          </div>
                         </div>
                       </div>
                       <div className="text-right">
-                        <p className={`font-bold ${
-                          transaction.amount > 0 ? 'text-green-600' : 'text-red-600'
-                        }`}>
-                          {transaction.amount > 0 ? '+' : ''}{formatCurrency(transaction.amount)}
+                        <p className="text-sm text-gray-600 mb-1">Available Balance</p>
+                        <p className="text-3xl font-bold text-green-600">
+                          {formatCurrency(account.balance)}
                         </p>
-                        <Badge variant={transaction.status === 'completed' ? 'default' : 'secondary'}>
-                          {transaction.status}
-                        </Badge>
+                        <Badge className="mt-2 bg-green-100 text-green-800">Active</Badge>
                       </div>
                     </div>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
+                    
+                    {pendingWinnings > 0 && (
+                      <div className="mt-4 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
+                        <div className="flex items-center">
+                          <AlertCircle className="w-5 h-5 text-yellow-600 mr-2" />
+                          <span className="font-medium text-yellow-800">
+                            Pending Quiz Winnings: {formatCurrency(pendingWinnings)}
+                          </span>
+                        </div>
+                        <p className="text-sm text-yellow-700 mt-1">
+                          Will be automatically credited to your account
+                        </p>
+                      </div>
+                    )}
+                  </CardContent>
+                </Card>
+
+                {/* Recent Transactions */}
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="text-lg">Recent Transactions</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="space-y-3">
+                      {account.transactions.map((transaction) => (
+                        <div key={transaction.id} className="flex items-center justify-between p-4 border rounded-lg hover:bg-gray-50">
+                          <div className="flex items-center space-x-4">
+                            <div className={`w-10 h-10 rounded-full flex items-center justify-center ${
+                              transaction.type === 'deposit' || transaction.type === 'quiz_winning' 
+                                ? 'bg-green-100 text-green-600' 
+                                : 'bg-red-100 text-red-600'
+                            }`}>
+                              {transaction.type === 'deposit' || transaction.type === 'quiz_winning' ? (
+                                <ArrowRight className="w-5 h-5 rotate-180" />
+                              ) : (
+                                <ArrowRight className="w-5 h-5" />
+                              )}
+                            </div>
+                            <div>
+                              <p className="font-medium text-sm">{transaction.description}</p>
+                              <p className="text-xs text-gray-500">{transaction.date}</p>
+                            </div>
+                          </div>
+                          <div className="text-right">
+                            <p className={`font-bold ${
+                              transaction.amount > 0 ? 'text-green-600' : 'text-red-600'
+                            }`}>
+                              {transaction.amount > 0 ? '+' : ''}{formatCurrency(transaction.amount)}
+                            </p>
+                            <Badge variant={transaction.status === 'completed' ? 'default' : 'secondary'} className="text-xs">
+                              {transaction.status}
+                            </Badge>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
+            </div>
           </div>
         )}
 
         {/* Transfer Money Form */}
         {currentView === 'transfer' && (
           <Card className="max-w-md mx-auto">
-            <CardHeader>
+            <CardHeader className="bg-blue-600 text-white rounded-t-lg">
               <CardTitle className="flex items-center">
                 <CreditCard className="w-5 h-5 mr-2" />
-                Transfer Money
+                Fund Transfer
               </CardTitle>
             </CardHeader>
-            <CardContent className="space-y-4">
+            <CardContent className="space-y-4 p-6">
               <div>
-                <label className="block text-sm font-medium mb-2">Transfer To</label>
+                <label className="block text-sm font-medium mb-2">Beneficiary Account/UPI ID</label>
                 <Input 
                   value={transferTo}
                   onChange={(e) => setTransferTo(e.target.value)}
-                  placeholder="Account Number or Name"
+                  placeholder="Enter account number or UPI ID"
+                  className="border-gray-300"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium mb-2">Amount</label>
+                <label className="block text-sm font-medium mb-2">Amount (₹)</label>
                 <Input 
                   type="number"
                   value={transferAmount}
                   onChange={(e) => setTransferAmount(e.target.value)}
                   placeholder="0.00"
                   step="0.01"
+                  className="border-gray-300"
                 />
               </div>
               <div className="flex space-x-2">
-                <Button onClick={handleTransfer} className="flex-1">
-                  Transfer
+                <Button onClick={handleTransfer} className="flex-1 bg-blue-600 hover:bg-blue-700">
+                  Transfer Now
                 </Button>
                 <Button 
                   variant="outline" 
@@ -508,26 +549,27 @@ const BankingSystem: React.FC<BankingSystemProps> = ({ onClose, pendingWinnings 
         {/* Deposit Form */}
         {currentView === 'deposit' && (
           <Card className="max-w-md mx-auto">
-            <CardHeader>
+            <CardHeader className="bg-green-600 text-white rounded-t-lg">
               <CardTitle className="flex items-center">
                 <DollarSign className="w-5 h-5 mr-2" />
                 Deposit Funds
               </CardTitle>
             </CardHeader>
-            <CardContent className="space-y-4">
+            <CardContent className="space-y-4 p-6">
               <div>
-                <label className="block text-sm font-medium mb-2">Amount</label>
+                <label className="block text-sm font-medium mb-2">Amount (₹)</label>
                 <Input 
                   type="number"
                   value={depositAmount}
                   onChange={(e) => setDepositAmount(e.target.value)}
                   placeholder="0.00"
                   step="0.01"
+                  className="border-gray-300"
                 />
               </div>
               <div className="flex space-x-2">
-                <Button onClick={handleDeposit} className="flex-1">
-                  Deposit
+                <Button onClick={handleDeposit} className="flex-1 bg-green-600 hover:bg-green-700">
+                  Deposit Now
                 </Button>
                 <Button 
                   variant="outline" 
@@ -545,15 +587,15 @@ const BankingSystem: React.FC<BankingSystemProps> = ({ onClose, pendingWinnings 
         {/* Withdraw Form */}
         {currentView === 'withdraw' && (
           <Card className="max-w-md mx-auto">
-            <CardHeader>
+            <CardHeader className="bg-red-600 text-white rounded-t-lg">
               <CardTitle className="flex items-center">
                 <ArrowRight className="w-5 h-5 mr-2" />
                 Withdraw Cash
               </CardTitle>
             </CardHeader>
-            <CardContent className="space-y-4">
+            <CardContent className="space-y-4 p-6">
               <div>
-                <label className="block text-sm font-medium mb-2">Amount</label>
+                <label className="block text-sm font-medium mb-2">Amount (₹)</label>
                 <Input 
                   type="number"
                   value={withdrawAmount}
@@ -561,14 +603,15 @@ const BankingSystem: React.FC<BankingSystemProps> = ({ onClose, pendingWinnings 
                   placeholder="0.00"
                   step="0.01"
                   max={account.balance}
+                  className="border-gray-300"
                 />
                 <p className="text-sm text-gray-500 mt-1">
                   Available: {formatCurrency(account.balance)}
                 </p>
               </div>
               <div className="flex space-x-2">
-                <Button onClick={handleWithdraw} className="flex-1">
-                  Withdraw
+                <Button onClick={handleWithdraw} className="flex-1 bg-red-600 hover:bg-red-700">
+                  Withdraw Now
                 </Button>
                 <Button 
                   variant="outline" 
