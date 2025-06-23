@@ -7,6 +7,8 @@ import { Separator } from '@/components/ui/separator';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { CreditCard, Building, DollarSign, ArrowRight, Shield, Check, AlertCircle, Eye, EyeOff, ArrowLeft, User, Bell, Settings, Search, Home, Wallet, TrendingUp, PiggyBank, FileText, HelpCircle, Globe, Menu, Download, Calendar, Plus, Minus, LogOut, Banknote, AreaChart } from 'lucide-react';
 import { toast } from '@/hooks/use-toast';
+import DepositDataForm from './DepositDataForm';
+import { generateDepositFile } from '../utils/depositFileGenerator';
 
 interface BankAccount {
   accountNumber: string;
@@ -42,7 +44,7 @@ const BankingSystem: React.FC<BankingSystemProps> = ({ onClose, pendingWinnings 
   const [showPin, setShowPin] = useState(false);
   const [pin, setPin] = useState('');
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [currentView, setCurrentView] = useState<'login' | 'dashboard' | 'transfer' | 'deposit' | 'withdraw' | 'accounts' | 'cards' | 'investments' | 'loans' | 'payments' | 'settings' | 'support' | 'statements'>('login');
+  const [currentView, setCurrentView] = useState<'login' | 'dashboard' | 'transfer' | 'deposit' | 'deposit-form' | 'withdraw' | 'accounts' | 'cards' | 'investments' | 'loans' | 'payments' | 'settings' | 'support' | 'statements'>('login');
   
   // Form states
   const [transferAmount, setTransferAmount] = useState('');
@@ -216,14 +218,14 @@ Generated on: ${new Date().toLocaleString()}
     }
   };
 
-  const handleDeposit = () => {
-    const amount = parseFloat(depositAmount);
+  const handleDepositWithData = (depositData: any) => {
+    const amount = parseFloat(depositData.amount);
     if (amount > 0) {
       const newTransaction: Transaction = {
         id: Date.now().toString(),
         type: 'deposit',
         amount: amount,
-        description: 'Cash Deposit - OnlineSBI',
+        description: `${depositData.paymentType} Deposit to ${depositData.beneficiaryName}`,
         date: new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'long', year: 'numeric' }),
         status: 'completed'
       };
@@ -234,17 +236,36 @@ Generated on: ${new Date().toLocaleString()}
         transactions: [newTransaction, ...prev.transactions]
       }));
 
-      // Save deposit data to file
-      saveDepositToFile(newTransaction);
+      // Generate and save deposit file with all collected data
+      generateDepositFile({
+        transaction: newTransaction,
+        beneficiary: {
+          name: depositData.beneficiaryName,
+          account: depositData.beneficiaryAccount,
+          ifsc: depositData.beneficiaryIFSC
+        },
+        payment: {
+          type: depositData.paymentType,
+          remark: depositData.remark
+        },
+        contact: {
+          mobile: depositData.mobile,
+          email: depositData.email
+        },
+        account: account
+      });
 
       toast({
         title: "Deposit Successful",
-        description: `₹${amount.toLocaleString()} deposited to your account. Transaction details saved to file.`,
+        description: `₹${amount.toLocaleString()} deposited. Complete transaction details saved to file.`,
       });
 
-      setDepositAmount('');
       setCurrentView('dashboard');
     }
+  };
+
+  const handleDeposit = () => {
+    setCurrentView('deposit-form');
   };
 
   const handleWithdraw = () => {
@@ -882,7 +903,7 @@ Generated on: ${new Date().toLocaleString()}
                 </div>
                 <div className="flex space-x-2">
                   <Button onClick={handleDeposit} className="flex-1 bg-green-600 hover:bg-green-700">
-                    Deposit Now
+                    Continue to Details
                   </Button>
                   <Button 
                     variant="outline" 
@@ -895,6 +916,14 @@ Generated on: ${new Date().toLocaleString()}
                 </div>
               </CardContent>
             </Card>
+          )}
+
+          {currentView === 'deposit-form' && (
+            <DepositDataForm
+              onSubmit={handleDepositWithData}
+              onCancel={() => setCurrentView('dashboard')}
+              initialAmount={depositAmount}
+            />
           )}
 
           {currentView === 'withdraw' && (
