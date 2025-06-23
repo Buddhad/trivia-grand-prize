@@ -18,12 +18,12 @@ interface Question {
 }
 
 const MONEY_LADDER = [
-  "$100", "$200", "$300", "$500", "$1,000",
-  "$2,000", "$4,000", "$8,000", "$16,000", "$32,000",
-  "$64,000", "$125,000", "$250,000", "$500,000", "$1,000,000"
+  "₹1", "₹2", "₹3", "₹5", "₹6",
+  "₹7", "₹8", "₹9", "₹10", "₹12",
+  "₹20", "₹30", "₹40", "₹50", "₹100"
 ];
 
-const SAFE_POINTS = [4, 9]; // $1,000 and $32,000
+const SAFE_POINTS = [4, 9]; // ₹1 and ₹100
 
 const QUESTIONS: Question[] = [
   // Easy Questions (1-5)
@@ -179,7 +179,7 @@ const Index = () => {
     setSelectedAnswer(null);
     setFinalAnswer(null);
     setGameOver(false);
-    setWonAmount('$0');
+    setWonAmount('₹0');
     setPendingWinnings(0);
     setUsedLifelines({ fiftyFifty: false, askAudience: false, phoneAFriend: false });
     setHiddenOptions([]);
@@ -187,7 +187,7 @@ const Index = () => {
     setFriendSuggestion(null);
     toast({
       title: "Game Started!",
-      description: "Good luck on your journey to $1,000,000!",
+      description: "Good luck on your journey to ₹100!",
     });
   };
 
@@ -219,7 +219,7 @@ const Index = () => {
         setGameState('finished');
         toast({
           title: "CONGRATULATIONS! 🎉",
-          description: "You've won $1,000,000! Check your bank account!",
+          description: "You've won ₹100! Check your bank account!",
         });
       } else {
         // Next question
@@ -238,7 +238,7 @@ const Index = () => {
       }
     } else {
       // Wrong answer
-      let finalAmount = '$0';
+      let finalAmount = '₹0';
       let winnings = 0;
       // Check for safe points
       if (currentQuestionIndex > SAFE_POINTS[1]) {
@@ -246,9 +246,9 @@ const Index = () => {
       } else if (currentQuestionIndex > SAFE_POINTS[0]) {
         finalAmount = MONEY_LADDER[SAFE_POINTS[0]];
       }
-      
-      if (finalAmount !== '$0') {
-        winnings = parseInt(finalAmount.replace(/[\$,]/g, ''));
+
+      if (finalAmount !== '₹0') {
+        winnings = parseInt(finalAmount.replace(/[\₹,]/g, ''));
         setPendingWinnings(winnings);
       }
       
@@ -264,10 +264,10 @@ const Index = () => {
   };
 
   const walkAway = () => {
-    const currentAmount = currentQuestionIndex > 0 ? MONEY_LADDER[currentQuestionIndex - 1] : '$0';
+    const currentAmount = currentQuestionIndex > 0 ? MONEY_LADDER[currentQuestionIndex - 1] : '₹0';
     let winnings = 0;
-    if (currentAmount !== '$0') {
-      winnings = parseInt(currentAmount.replace(/[\$,]/g, ''));
+    if (currentAmount !== '₹0') {
+      winnings = parseInt(currentAmount.replace(/[\₹,]/g, ''));
       setPendingWinnings(winnings);
     }
     setWonAmount(currentAmount);
@@ -355,11 +355,11 @@ const Index = () => {
           <CardContent className="p-8 text-center">
             <div className="mb-6">
               <Trophy className="w-16 h-16 mx-auto mb-4 text-purple-900" />
-              <h1 className="text-4xl font-bold text-purple-900 mb-2">Who Wants to be a</h1>
-              <h2 className="text-3xl font-bold text-purple-900">MILLIONAIRE?</h2>
+              <h1 className="text-4xl font-bold text-purple-900 mb-2">Get a Chance to Win ₹100!</h1>
+              <h2 className="text-3xl font-bold text-purple-900">Answer Correctly & Win 100 Rupees!</h2>
             </div>
             <p className="text-purple-800 mb-6 text-lg">
-              Answer 15 questions correctly to win $1,000,000!
+              Answer 15 questions correctly to win ₹100!
             </p>
             <p className="text-purple-700 mb-6 text-sm font-semibold">
               💰 Win REAL money deposited to your bank account! 💰
