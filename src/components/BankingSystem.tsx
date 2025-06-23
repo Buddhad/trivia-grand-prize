@@ -85,6 +85,61 @@ const BankingSystem: React.FC<BankingSystemProps> = ({ onClose, pendingWinnings 
     ]
   });
 
+  // Function to save deposit data to txt file
+  const saveDepositToFile = (transaction: Transaction) => {
+    const depositData = `
+=== SBI Bank Deposit Transaction Record ===
+Transaction ID: ${transaction.id}
+Date: ${transaction.date}
+Amount: ₹${transaction.amount.toLocaleString()}
+Description: ${transaction.description}
+Status: ${transaction.status}
+
+=== Steps to Fill SBI Bank Details for Online Payment (e.g., UPI, NEFT, IMPS, Merchant Payment) ===
+
+1. Log in to SBI NetBanking
+   - Go to https://www.onlinesbi.sbi
+   - Click "Personal Banking" > Log in with username/password.
+
+2. Navigate to Payments/Transfers
+   - Select "Payments/Transfers" > Choose payment type (e.g., NEFT, IMPS, UPI).
+
+3. Enter Recipient Details
+   - Beneficiary Name: Enter the payee's name.
+   - Account Number: Input the recipient's account number.
+   - Confirm Account Number: Re-enter to avoid errors.
+   - IFSC Code: Enter the recipient's bank IFSC (e.g., SBIN0001234).
+
+4. Enter Payment Amount
+   - Fill in the amount and add a remark (optional).
+
+5. Authenticate Transaction
+   - Verify details > Enter OTP (sent to your registered mobile).
+   - Click "Submit" to complete the payment.
+
+=== Account Details ===
+Account Number: ${account.accountNumber}
+Account Type: ${account.accountType}
+CIF Number: ${account.cifNumber}
+IFSC Code: ${account.ifscCode}
+Branch: ${account.branch}
+Current Balance: ₹${account.balance.toLocaleString()}
+
+Generated on: ${new Date().toLocaleString()}
+`;
+
+    // Create and download the file
+    const blob = new Blob([depositData], { type: 'text/plain' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `SBI_Deposit_${transaction.id}_${new Date().toISOString().split('T')[0]}.txt`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+  };
+
   const handleLogin = () => {
     if (pin === '1234' || pin === '0000') {
       setIsLoggedIn(true);
@@ -179,9 +234,12 @@ const BankingSystem: React.FC<BankingSystemProps> = ({ onClose, pendingWinnings 
         transactions: [newTransaction, ...prev.transactions]
       }));
 
+      // Save deposit data to file
+      saveDepositToFile(newTransaction);
+
       toast({
         title: "Deposit Successful",
-        description: `₹${amount.toLocaleString()} deposited to your account`,
+        description: `₹${amount.toLocaleString()} deposited to your account. Transaction details saved to file.`,
       });
 
       setDepositAmount('');
