@@ -62,7 +62,7 @@ const BankingSystem: React.FC<BankingSystemProps> = ({ onClose, pendingWinnings 
   
   const [account, setAccount] = useState<BankAccount>({
     accountNumber: '23476385309',
-    balance: 332430.65,
+    balance: 12500.65,
     accountType: 'Savings Account',
     cifNumber: '98443385679',
     ifscCode: 'SBIN0075319',
@@ -71,9 +71,9 @@ const BankingSystem: React.FC<BankingSystemProps> = ({ onClose, pendingWinnings 
       {
         id: '001',
         type: 'withdrawal',
-        amount: -26770.00,
+        amount: -1770.00,
         description: 'UPI/DR/328240908978/Bruhat...',
-        date: '12 September 2023',
+        date: '12 September 2024',
         status: 'completed'
       },
       {
@@ -81,7 +81,7 @@ const BankingSystem: React.FC<BankingSystemProps> = ({ onClose, pendingWinnings 
         type: 'deposit',
         amount: 4200.00,
         description: 'UPI/CR/328091574847/PRAMIL...',
-        date: '11 September 2023',
+        date: '11 September 2025',
         status: 'completed'
       }
     ]

@@ -18,12 +18,12 @@ interface Question {
 }
 
 const MONEY_LADDER = [
-  "₹1", "₹2", "₹3", "₹5", "₹6",
-  "₹7", "₹8", "₹9", "₹10", "₹12",
-  "₹20", "₹30", "₹40", "₹50", "₹100"
+  "₹1", "₹2", "₹3", "₹5", "₹10",
+  "₹20", "₹30", "₹40", "₹50", "₹100",
+  "₹200", "₹300", "₹400", "₹500", "₹1000"
 ];
 
-const SAFE_POINTS = [4, 9]; // ₹1 and ₹100
+const SAFE_POINTS = [4, 9]; // ₹1 and ₹1000
 
 const QUESTIONS: Question[] = [
   // Easy Questions (1-5)
@@ -187,7 +187,7 @@ const Index = () => {
     setFriendSuggestion(null);
     toast({
       title: "Game Started!",
-      description: "Good luck on your journey to ₹100!",
+      description: "Good luck on your journey to ₹1000!",
     });
   };
 
@@ -219,7 +219,7 @@ const Index = () => {
         setGameState('finished');
         toast({
           title: "CONGRATULATIONS! 🎉",
-          description: "You've won ₹100! Check your bank account!",
+          description: "You've won ₹1000! Check your bank account!",
         });
       } else {
         // Next question
@@ -355,11 +355,11 @@ const Index = () => {
           <CardContent className="p-8 text-center">
             <div className="mb-6">
               <Trophy className="w-16 h-16 mx-auto mb-4 text-purple-900" />
-              <h1 className="text-4xl font-bold text-purple-900 mb-2">Get a Chance to Win ₹100!</h1>
-              <h2 className="text-3xl font-bold text-purple-900">Answer Correctly & Win 100 Rupees!</h2>
+              <h1 className="text-4xl font-bold text-purple-900 mb-2">Get a Chance to Win ₹1000!</h1>
+              <h2 className="text-3xl font-bold text-purple-900">Answer Correctly & Win 1000 Rupees!</h2>
             </div>
             <p className="text-purple-800 mb-6 text-lg">
-              Answer 15 questions correctly to win ₹100!
+              Answer 15 questions correctly to win ₹1000!
             </p>
             <p className="text-purple-700 mb-6 text-sm font-semibold">
               💰 Win REAL money deposited to your bank account! 💰
